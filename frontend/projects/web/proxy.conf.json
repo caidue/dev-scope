@@ -1,0 +1,23 @@
+{
+    "/api": {
+        "target": "http://localhost:8082",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+    },
+    "/openapi": {
+        "target": "http://localhost:8082",
+        "secure": false,
+        "changeOrigin": true
+    },
+    "/swagger-ui": {
+        "target": "http://localhost:8082",
+        "secure": false,
+        "changeOrigin": true
+    },
+    "/q": {
+        "target": "http://localhost:8082",
+        "secure": false,
+        "changeOrigin": true
+    }
+}

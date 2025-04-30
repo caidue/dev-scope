@@ -1,0 +1,94 @@
+name: Pull Request Validation
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+    types: [opened, synchronize, reopened]
+
+env:
+  MAVEN_OPTS: -Xmx1024m
+  NODE_VERSION: '20.19.0'
+
+jobs:
+  validate-pr:
+    name: Validate Pull Request
+    runs-on: ubuntu-latest
+
+    steps:
+    # Setup
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'yarn'
+
+    - name: Cache Maven dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+
+    # Build dependencies
+    - name: Build db-migration (without quality checks)
+      run: mvn clean install -pl db-migration -DskipTests
+
+    - name: Install frontend dependencies
+      run: |
+        cd frontend
+        yarn install
+
+    # Code quality checks
+    - name: Run backend code quality checks
+      run: |
+        mvn spotless:check -pl backend
+        mvn checkstyle:check -pl backend
+
+    - name: Run frontend formatting check
+      run: |
+        cd frontend
+        yarn format:check
+
+    - name: Run frontend linting and type checking
+      run: |
+        cd frontend
+        yarn lint:web
+
+    - name: Check for security vulnerabilities (yarn audit)
+      run: |
+        cd frontend
+        yarn audit --level moderate
+
+    # Build and test
+    - name: Build frontend
+      run: |
+        cd frontend
+        yarn build:web
+
+    - name: Run backend unit tests
+      run: mvn clean test
+
+    - name: Build application
+      run: mvn clean package -DskipTests
+
+    # Upload artifacts
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: pr-test-results-${{ github.event.number }}
+        path: |
+          backend/target/surefire-reports/
+          backend/target/failsafe-reports/
+
