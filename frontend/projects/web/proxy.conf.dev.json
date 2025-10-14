@@ -1,24 +1,24 @@
 {
     "/resources": {
-        "target": "http://localhost:8080",
+        "target": "http://localhost:8082",
         "secure": false,
         "changeOrigin": true,
         "logLevel": "debug"
     },
     "/openapi": {
-        "target": "http://localhost:8080",
+        "target": "http://localhost:8082",
         "secure": false,
         "changeOrigin": true,
         "logLevel": "debug"
     },
     "/swagger-ui": {
-        "target": "http://localhost:8080",
+        "target": "http://localhost:8082",
         "secure": false,
         "changeOrigin": true,
         "logLevel": "debug"
     },
     "/q": {
-        "target": "http://localhost:8080",
+        "target": "http://localhost:8082",
         "secure": false,
         "changeOrigin": true,
         "logLevel": "debug"

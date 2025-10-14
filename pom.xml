@@ -25,7 +25,6 @@
     <modules>
         <module>frontend</module>
         <module>backend</module>
-        <module>db-migration</module>
         <module>docker-image</module>
     </modules>
 

@@ -1,30 +1,18 @@
 # Frontend Module
 
-This module contains the frontend application for DevScope with shared code.
+This module contains the frontend application for DevScope.
 
 ## Structure
 
 ```
 frontend/
-├── shared/           # Shared Angular library
 ├── web/             # Web Angular application
 └── package.json     # Root package.json with workspace configuration
 ```
 
-## Shared Library
-
-The `shared/` directory contains an Angular library with common code that can be used by the web application:
-
-- **Services**: API services, authentication, etc.
-- **Models**: TypeScript interfaces and types
-- **Components**: Reusable UI components
-- **Guards**: Route guards for authentication
-- **Interceptors**: HTTP interceptors
-
 ## Web Application
 
 The `web/` directory contains the traditional Angular web application that runs in browsers.
-
 
 ## Development
 
@@ -36,15 +24,10 @@ The `web/` directory contains the traditional Angular web application that runs 
 
 ### Setup
 
-1. Install dependencies for all modules:
+1. Install dependencies:
 
     ```bash
-    yarn install:all
-    ```
-
-2. Build the shared library:
-    ```bash
-    yarn build:shared
+    yarn install
     ```
 
 ### Running Development Servers
@@ -57,7 +40,6 @@ yarn start:web
 
 The web app will be available at `http://localhost:4200`
 
-
 ### Building for Production
 
 Build all applications:
@@ -69,22 +51,10 @@ yarn build
 Build individual applications:
 
 ```bash
-yarn build:shared
 yarn build:web
 ```
 
-#
-#### Building for Mobile
-
-```bash
-# Android
-yarn ionic:build:android
-
-# iOS
-yarn ionic:build:ios
-```
-
-### Testing
+## Testing
 
 Run tests for all modules:
 
@@ -95,77 +65,66 @@ yarn test
 Run tests for individual modules:
 
 ```bash
-yarn test:shared
 yarn test:web
 ```
 
-### Code Quality Tools
+## Code Quality Tools
 
-#### Linting (ESLint)
+### Linting
 
-Validates TypeScript/JavaScript code against style rules and best practices.
+Run linting for all modules:
 
 ```bash
-# Check for linting issues
 yarn lint
+```
 
-# Fix linting issues automatically
-yarn lint:fix
+Run linting for individual modules:
 
-# Run linting for specific modules
-yarn lint:shared
+```bash
 yarn lint:web
 ```
 
-#### Code Formatting (Prettier)
-
-Automatically formats TypeScript, JavaScript, HTML, CSS, and JSON files.
+Fix linting issues:
 
 ```bash
-# Format all code
-yarn format
+yarn lint:fix
+yarn lint:fix:web
+```
 
-# Format specific modules
-yarn format:shared
+### Formatting
+
+Format all code:
+
+```bash
+yarn format
+```
+
+Format individual modules:
+
+```bash
 yarn format:web
 ```
 
-#### Type Checking
-
-Validates TypeScript code for type errors.
+Check formatting without making changes:
 
 ```bash
-# Run type checking
-yarn type-check
-
-# Build with type checking
-yarn build
+yarn format:check
 ```
-
-#### Running All Quality Checks
-
-```bash
-# Run linting, formatting, and type checking
-yarn lint && yarn format && yarn type-check
-```
-
-## Adding New Shared Code
-
-1. Add your code to the appropriate directory in `shared/src/lib/`
-2. Export it from the corresponding `index.ts` file
-3. Export it from `shared/src/public-api.ts`
-4. Build the shared library: `yarn build:shared`
-5. Import and use it in your web application
 
 ## Project Scripts
 
-The root `package.json` provides convenient scripts for managing all modules:
-
-- `install:all` - Install dependencies for all modules
-- `build:shared` - Build the shared library
+- `start:web` - Start web development server
 - `build:web` - Build the web application
 - `build` - Build all applications
-- `start:web` - Start web development server
 - `test` - Run tests for all modules
 - `lint` - Run linting for all modules
-- `format` - Format code in all modules
+- `format` - Format all code
+- `clean` - Remove dist and node_modules directories
+
+## Development Workflow
+
+1. Make changes to your code
+2. Run tests: `yarn test`
+3. Check linting: `yarn lint`
+4. Format code: `yarn format`
+5. Build application: `yarn build`

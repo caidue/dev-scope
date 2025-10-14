@@ -14,10 +14,6 @@ if [ ! -d "node_modules" ]; then
     yarn install
 fi
 
-# Build shared library first
-echo "Building shared library..."
-yarn build:shared
-
 echo ""
 echo "Starting Angular development server..."
 echo "   - Frontend: http://localhost:4200"
@@ -32,5 +28,5 @@ echo ""
 echo "Press Ctrl+C to stop the server"
 echo ""
 
-# Start Angular development server with proxy to backend
-yarn start:web 
+# Start Angular development server with proxy to development backend
+yarn start:dev 

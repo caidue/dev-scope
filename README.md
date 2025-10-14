@@ -1,13 +1,12 @@
 # DevScope
 
-This is a fullstack project that combines Quarkus (Java) backend with Angular frontend.
+This is a simple fullstack project that combines Quarkus (Java) backend with Angular frontend. No authentication or database required.
 
 ## Project Structure
 
 - `backend`: Quarkus application with REST endpoints
-- `db-migration`: Database migration scripts using Flyway
 - `docker-image`: Docker image configuration for the backend
-- `frontend`: Angular application with NgRx state management
+- `frontend`: Angular application
 - `environments`: Docker Compose configuration for development and production
 - `scripts`: Utility scripts for development and deployment
 
@@ -25,8 +24,6 @@ This is a fullstack project that combines Quarkus (Java) backend with Angular fr
 
 | Service | Development Port | Container Port | Purpose |
 |---------|------------------|----------------|---------|
-| **Keycloak** | **8081** | **8081** | Authentication |
-| **PostgreSQL** | **5432** | **5432** | Database |
 | **Container** | - | **8080** | Production-like container |
 | **Backend Dev** | **8082** | - | Development server |
 | **Frontend Dev Web** | **4200** | - | Angular web dev server |
@@ -42,8 +39,6 @@ This is a fullstack project that combines Quarkus (Java) backend with Angular fr
 This will start:
 - **Backend**: Quarkus application at `http://localhost:8080`
 - **Frontend**: Angular application embedded in the backend at `http://localhost:8080`
-- **Keycloak**: Authentication server at `http://localhost:8081`
-- **PostgreSQL**: Database on port `5432`
 
 #### Option 2: Local Development (Frontend + Backend)
 1. Start the backend in development mode:
@@ -67,7 +62,7 @@ To build the complete application as a single Docker image:
 ```bash
 mvn clean install -DskipTests
 ```
-
+d
 This will:
 1. Build the Angular frontend (using Yarn)
 2. Build the Quarkus backend (with frontend assets embedded)
@@ -77,10 +72,8 @@ The Docker image will be available in your local Docker registry and can be used
 
 ### Docker Deployment
 
-The services will be available at:
+The application will be available at:
 - **Application**: `http://localhost:8080` (Backend API + Frontend)
-- **Keycloak Admin Console**: `http://localhost:8081`
-- **PostgreSQL**: `localhost:5432`
 
 ### Docker Management Scripts
 
@@ -98,7 +91,7 @@ The services will be available at:
 
 #### Rebuild Scripts
 ```bash
-./rebuild.sh                        # Rebuild app container only (keeps DB/Keycloak running)
+./rebuild.sh                        # Rebuild app container
 mvn clean install -DskipTests       # Build without Docker
 ```
 
@@ -116,13 +109,8 @@ docker-compose down -v        # Stop and remove volumes
 - **Backend**:
   - Quarkus 3.24.4
   - RESTEasy Reactive
-  - Hibernate ORM with Panache
-  - PostgreSQL database
-  - Flyway migrations
   - OpenAPI documentation
   - Health checks
-  - Keycloak OIDC integration
-  - JWT-based authentication
 
 - **Frontend**:
   - Angular 19.2.14
@@ -135,24 +123,11 @@ docker-compose down -v        # Stop and remove volumes
   - Development scripts
   - Hot reloading for both frontend and backend
 
-## Authentication
+## API Endpoints
 
-This project uses Keycloak for authentication and authorization:
-
-- **Keycloak Server**: Running on port 8081
-- **Realm**: `quarkus`
-- **Backend Client**: `backend-service` (confidential)
-- **Admin Console**: `http://localhost:8081` (admin/admin)
-
-### API Authentication
-
-All API endpoints under `/api/*` require authentication. The backend validates JWT tokens from Keycloak and automatically syncs user information to the local database.
-
-## Database Migrations
-
-Database migrations are managed using Flyway. Migration scripts are located in the `backend/src/main/resources/db/migration` directory.
-
-Migrations run automatically when the application starts.
+- **GET** `/resources/*` - API of the app
+- **GET** `/q/health` - Health check endpoint
+- **GET** `/openapi` - OpenAPI documentation
 
 ## Project Structure
 
@@ -160,7 +135,6 @@ Migrations run automatically when the application starts.
 - `frontend`: Angular application (built and embedded in backend)
 - `environments`: Docker Compose configuration for development
 - `docker-image`: Docker image configuration
-- `db-migration`: Database migration scripts (legacy, now in backend)
 
 ## CI/CD Pipeline
 
