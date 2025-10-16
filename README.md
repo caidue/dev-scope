@@ -1,5 +1,7 @@
 # DevScope
 
+A fun interactive app where users select skill cards (e.g., "HTML", "Java", "React", etc.) and receive a personalized summary of what type of developer they are based on their selections.
+
 This is a simple fullstack project that combines Quarkus (Java) backend with Angular frontend. No authentication or database required.
 
 ## Project Structure
